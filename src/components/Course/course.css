@@ -1,0 +1,6 @@
+.course {
+    cursor: pointer;
+}
+.course:hover {
+    transform: translateY(-4px);
+}

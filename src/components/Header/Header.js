@@ -11,7 +11,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import { Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -22,11 +21,11 @@ const pages = ['My Class', 'About', 'Leader Board'];
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
-        right: 40,
+        right: -5,
         top: 14,
         color: '#FFF',
-        border: '2px solid #FFF',
         padding: '0 4px',
+        fontSize: '29px'
     },
 }));
 
@@ -57,6 +56,10 @@ const Header = () => {
         history.push('/login');
     } 
 
+    // onClick change route to profile
+    const changeRouteToProfile = () => {
+        history.push('/profile');
+    }
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -72,21 +75,7 @@ const Header = () => {
                         >
                             <MenuIcon />
                         </IconButton>
-                    </Box>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Box>
-
-                    <Box sx={{ flexGrow: 0 }}>
-                    <Menu
+                        <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
                             anchorOrigin={{
@@ -110,6 +99,20 @@ const Header = () => {
                                 </MenuItem>
                             ))}
                         </Menu>
+                    </Box>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        {pages.map((page) => (
+                            <Button
+                                key={page}
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                {page}
+                            </Button>
+                        ))}
+                    </Box>
+
+                    <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Diamond Box" sx={{ marginRight: '17px' }}>
                             <IconButton
                                 size="large"
@@ -119,21 +122,10 @@ const Header = () => {
                             >
                                 <StyledBadge badgeContent={4}>
                                     <DiamondIcon  sx={{
-                                    color: 'goldenrod',
+                                    color: 'white',
                                     fontSize: '30px'
                                 }}/>
                                 </StyledBadge>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Notifications" sx={{ marginRight: '30px' }}>
-                            <IconButton
-                                size="large"
-                                aria-label="show 17 new notifications"
-                                color="inherit"
-                            >
-                                <Badge badgeContent={1} color="error">
-                                    <NotificationsIcon />
-                                </Badge>
                             </IconButton>
                         </Tooltip>
                         {
@@ -143,10 +135,10 @@ const Header = () => {
                             </IconButton>
                         </Tooltip>
                             : 
-                            <Tooltip title="Notifications" sx={{ marginRight: '17px' }}>
+                            <Tooltip title="Login" sx={{ marginRight: '17px' }}>
                             <IconButton
                                 size="small"
-                                aria-label="show 17 new notifications"
+                                aria-label="login"
                                 color="inherit"
                                 onClick={() => changeRoute()}
                             >
@@ -154,7 +146,7 @@ const Header = () => {
                             </IconButton>
                         </Tooltip>
                         }
-                        <Menu
+                        {user?.email && <Menu
                             sx={{ mt: '45px' }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
@@ -173,7 +165,7 @@ const Header = () => {
                         
                         {
                             user?.email && <MenuItem>
-                            <Typography textAlign="center">Profile</Typography>
+                            <Typography textAlign="center" onClick={changeRouteToProfile}>Profile</Typography>
                         </MenuItem>
                         }
                         {
@@ -183,6 +175,7 @@ const Header = () => {
                         }
 
                         </Menu>
+                    }
                     </Box>
                 </Toolbar>
             </Container>

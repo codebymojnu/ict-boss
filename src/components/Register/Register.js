@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react';
-import { Box, Button, Container, createTheme, CssBaseline, Grid, Paper, TextField, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Button, Container, createTheme, CssBaseline, Grid, Modal, Paper, TextField, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
 import EmailIcon from '@mui/icons-material/Email';
@@ -13,6 +13,24 @@ const SignUpForm = () => {
   const theme = createTheme();
   const { handleRegistration } = useFirebase();
 
+  // Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // Modal Style
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'white',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -20,10 +38,11 @@ const SignUpForm = () => {
     const email = data.get('email');
     const password = data.get('password');
     handleRegistration(fullName, email, password);
+    handleOpen();
   };
 
   return (
-    <div style={{marginTop: '27px'}}>
+    <div style={{ marginTop: '27px' }}>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -128,6 +147,18 @@ const SignUpForm = () => {
           </Paper>
         </Container>
       </ThemeProvider>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="Verify Your Email"
+        aria-describedby="verify-email"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            please verify your email.
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   );
 };

@@ -9,6 +9,15 @@ const useFirebase = () => {
     const [error, setError] = useState('');
     const auth = getAuth();
 
+    useEffect(() => {
+        onAuthStateChanged(auth, user => {
+            if(user){
+                console.log('state in inside', user);
+                setUser(user);
+            }
+        })
+    }, [auth])
+
     // REGISTER A NEW USER //
 
     const handleRegistration = (displayName, email, password) => {
@@ -71,21 +80,8 @@ const useFirebase = () => {
             .then(() => {
                 setUser({})
             })
+        window.location.pathname = '/'
     }
-
-    /* V.V.I 
-    
-    Without below this code, Authentication is not OK.
-    */
-
-    useEffect(() => {
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                setUser(user);
-            }
-        })
-    })
-
 
     return {
         user,
