@@ -11,7 +11,7 @@ import useFirebase from '../../hooks/useFirebase';
 
 const SignUpForm = () => {
   const theme = createTheme();
-  const { handleRegistration } = useFirebase();
+  const { handleRegistration, handlePhoneRegistration } = useFirebase();
 
   // Modal
   const [open, setOpen] = useState(false);
@@ -37,7 +37,10 @@ const SignUpForm = () => {
     const fullName = data.get('fullName');
     const email = data.get('email');
     const password = data.get('password');
-    handleRegistration(fullName, email, password);
+    const phone = data.get('phone');
+    console.log(phone);
+    // handleRegistration(fullName, email, password);
+    handlePhoneRegistration(phone);
     handleOpen();
   };
 

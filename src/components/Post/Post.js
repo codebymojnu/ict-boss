@@ -12,7 +12,7 @@ const Post = (props) => {
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 340,
+                    height: 'auto',
                 }}
             >
                 <Link>{title}</Link>

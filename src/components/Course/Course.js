@@ -1,15 +1,22 @@
 import React from 'react';
 import { Avatar, Card, CardContent, CardMedia, Container, Grid, Stack, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { useHistory } from 'react-router-dom';
 import './course.css';
 
 const Course = (props) => {
-    const { courseName, totalLearner, totalLesson, courseImage } = props.course;
+    const history = useHistory();
+    const { courseName, totalLearner, totalClass, courseImage, url } = props.course;
+
+    const changeRouteToPost = () => {
+        history.push(`/course/${url}`)
+    }
 
     return (
         <Grid item xs={12} sm={6} md={4} className="course">
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column'}}
+                onClick={changeRouteToPost}
             >
                 <CardMedia
                     component="div"
@@ -41,7 +48,7 @@ const Course = (props) => {
                             <Box
                             >
                                 <Typography>
-                                    Lesson: {totalLesson}
+                                   Class: {totalClass}
                                 </Typography>
                             </Box>
                         </Box>

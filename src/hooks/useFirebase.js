@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, RecaptchaVerifier, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPhoneNumber, signOut, updateProfile } from "firebase/auth";
 import initializeAuthentication from "../Firebase/firebase.init";
 
 initializeAuthentication();
@@ -31,6 +31,29 @@ const useFirebase = () => {
                 setError(error.message);
             })
     }
+
+// Phone Registration //
+
+  const handlePhoneRegistration = (phoneNumber) => {
+    window.recaptchaVerifier = new RecaptchaVerifier('re-capca', {
+        'size': 'invisible',
+        'callback': (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+        }
+      }, auth);
+      
+    let appVerifier = window.recaptchaVerifier;
+    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+      // ...
+    }).catch((error) => {
+      console.log('sms not send');
+    });
+  }
+
 
     // SIGN IN //
 
@@ -89,7 +112,8 @@ const useFirebase = () => {
         logOut,
         handleRegistration,
         handleSignIn,
-        handleResetPassword
+        handleResetPassword,
+        handlePhoneRegistration
     }
 }
 
